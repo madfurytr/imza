@@ -30,18 +30,43 @@ function addText() {
     // Mevcut görseli yeniden çiz
     drawImage();
 
+    // Metni satırlara böl
+    const lines = text.split('\n');
+    
+    // En uzun satırı bul
+    let maxLineLength = 0;
+    lines.forEach(line => {
+        if (line.length > maxLineLength) maxLineLength = line.length;
+    });
+
+    // Font boyutunu hesapla
+    let fontSize = 72; // Başlangıç font boyutu
+    const maxWidth = canvas.width * 0.5; // Maksimum genişlik
+    
+    // Font boyutunu ayarla
+    ctx.font = `bold ${fontSize}px Arial`;
+    let textWidth = ctx.measureText(lines[0]).width;
+    
+    // Eğer metin çok uzunsa font boyutunu küçült
+    while (textWidth > maxWidth && fontSize > 20) {
+        fontSize -= 2;
+        ctx.font = `bold ${fontSize}px Arial`;
+        textWidth = ctx.measureText(lines[0]).width;
+    }
+
     // Metin ayarları
-    ctx.font = 'bold 72px Arial';
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
     
+    // Satır aralığını font boyutuna göre ayarla
+    const lineHeight = fontSize * 1.2;
+    
     // Metni ortadaki boşluğa yerleştir
-    const lines = text.split('\n');
-    let y = canvas.height / 2 - (lines.length * 85) / 2;
+    let y = canvas.height / 2 - (lines.length * lineHeight) / 2;
     
     lines.forEach(line => {
         ctx.fillText(line, canvas.width * 0.3, y);
-        y += 85;
+        y += lineHeight;
     });
 }
 
