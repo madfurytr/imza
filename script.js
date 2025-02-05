@@ -46,11 +46,10 @@ function addText() {
 }
 
 function downloadImage() {
-    // Canvas'ı görüntüye çevir
-    const image = canvas.toDataURL('image/jpeg', 0.8);
-    
-    // Yeni pencerede aç
-    const win = window.open();
-    win.document.write('<img src="' + image + '" alt=""/>');
-    win.document.title = "Görseli kaydetmek için sağ tıklayın";
+    const link = document.createElement('a');
+    link.download = 'ataturk-mesaj.png';
+    link.href = canvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 } 
